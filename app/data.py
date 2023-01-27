@@ -6,7 +6,7 @@ import pprint
 def get_all_national_parks_data():
     national_parks = []
     NATIONAL_PARKS_SERVICE_API_KEY = os.environ['NATIONAL_PARKS_SERVICE_API_KEY']
-    print(NATIONAL_PARKS_SERVICE_API_KEY)
+    
     # make 10 api calls to get all 468 parks (limit for each request is 50)
     start_int = 0
     while start_int <= 500:
@@ -21,11 +21,6 @@ def get_all_national_parks_data():
             else:
                 print(response.text)
                 break
-        # except:
-        #     print("error, could not get response")
-        #     break
-
-
 
     return national_parks
 
