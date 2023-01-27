@@ -16,17 +16,17 @@ def get_all_parks():
 
 
 #returns json object of all the parks names and locations
-@parks_bp.route('locations', methods=["GET"])
+@parks_bp.route('/locations', methods=["GET"])
 def get_all_parks_location():
     all_parks_location = []
     
     for park in all_national_parks:
-        all_parks_location.append({"park_name":park['fullName'], 'location':park['latLong']})
+        all_parks_location.append({"park_id":park['id'], "park_name":park['fullName'], 'location':park['latLong']})
 
     return jsonify(all_parks_location)
 
 
-@parks_bp.route('/activity', methods=["GET"])
+@parks_bp.route('/activities', methods=["GET"])
 def get_parks_filtered_by_activity():
     filter_activities = request.get_json()['activities']
     parks_by_activity = []
@@ -53,6 +53,7 @@ def get_all_activities():
         activities.append(activity['name'])
 
     return jsonify({'activities':activities})
+
 
 @topics_bp.route('', methods=["GET"])
 def get_all_topics():
