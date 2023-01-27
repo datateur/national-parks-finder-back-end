@@ -1,4 +1,6 @@
 # misc
+.env
+.ENV
 .vscode
 .DS_Store
 .env.local

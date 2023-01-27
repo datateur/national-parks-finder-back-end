@@ -13,7 +13,7 @@ def get_all_national_parks_data():
                                     params={"api_key":NATIONAL_PARKS_SERVICE_API_KEY, "start":start_int})
         
             if response.status_code == 200:
-                national_parks += response.json()['data']
+                national_parks.append(response.json()['data'])
                 start_int += 50
             
             else:
