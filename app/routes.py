@@ -15,7 +15,7 @@ def get_all_parks():
     return jsonify({'parks':all_national_parks}), 200
 
 
-returns json object of all the parks names and locations
+#returns json object of all the parks names and locations
 @parks_bp.route('locations', methods=["GET"])
 def get_all_parks_location():
     all_parks_location = []
