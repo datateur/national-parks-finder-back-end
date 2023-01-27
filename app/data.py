@@ -1,7 +1,6 @@
 import requests, os
 import pprint
 
-
 #returns a list holding json objects of all the national parks. 
 def get_all_national_parks_data():
     national_parks = []
@@ -10,7 +9,6 @@ def get_all_national_parks_data():
     # make 10 api calls to get all 468 parks (limit for each request is 50)
     start_int = 0
     while start_int <= 500:
-        #try: 
             response = requests.get("https://developer.nps.gov/api/v1/parks?",
                                     params={"api_key":NATIONAL_PARKS_SERVICE_API_KEY, "start":start_int})
         
@@ -19,7 +17,7 @@ def get_all_national_parks_data():
                 start_int += 50
             
             else:
-                print(response.text)
+                print(response.status_code, '/n', response.text)
                 break
 
     return national_parks
