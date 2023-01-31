@@ -19,7 +19,8 @@ def get_all_national_parks_data():
             else:
                 print(response.status_code, '/n', response.text)
                 break
-
+    
+    print(len(national_parks))
     return national_parks
 
 pprint.pprint(get_all_national_parks_data()[0]['fullName'])
