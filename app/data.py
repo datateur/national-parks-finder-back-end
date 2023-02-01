@@ -23,6 +23,6 @@ def get_all_national_parks_data():
     print(len(national_parks))
     return national_parks
 
-pprint.pprint(get_all_national_parks_data()[0]['fullName'])
+#pprint.pprint(get_all_national_parks_data()[0]['fullName'])
 
 

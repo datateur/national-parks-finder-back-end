@@ -1,10 +1,13 @@
 from flask import Flask
 import os
+from flask_cors import CORS
 
 def create_app(test_config=None):
 
     app = Flask(__name__)
     app.config['DEBUG'] = True
+    CORS(app)
+
 
     # Register Blueprints here
     from .routes import parks_bp, activities_bp, topics_bp
