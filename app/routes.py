@@ -28,7 +28,7 @@ def get_all_parks_location():
     return jsonify(all_parks_location)
 
 
-@parks_bp.route('/activities', methods=["GET"])
+@parks_bp.route('/filter', methods=["GET"])
 def get_parks_filtered_by_activity():
     filter_activities = request.get_json()['activities']
     parks_by_activity = []
