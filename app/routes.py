@@ -21,7 +21,9 @@ def get_all_parks_location():
     all_parks_location = []
     
     for park in all_national_parks:
-        all_parks_location.append({"park_id":park['id'], "park_name":park['fullName'], 'location':park['latLong']})
+        all_parks_location.append({"park_id":park['parkCode'],
+                                "park_name":park['fullName'], 
+                                'location': {'lat': int(park['latitude']), 'long': int(park['longitude'])}})
 
     return jsonify(all_parks_location)
 
