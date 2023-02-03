@@ -29,8 +29,8 @@ def get_all_parks_location():
 
 
 @parks_bp.route('/filter', methods=["GET"])
-def get_parks_filtered_by_activity(activities):
-    filter_activities = activities
+def get_parks_filtered_by_activity():
+    filter_activities = request.args.get('activities')
     print(filter_activities)
     parks_by_activity = []
 
