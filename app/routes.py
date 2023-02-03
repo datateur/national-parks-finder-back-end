@@ -30,7 +30,7 @@ def get_all_parks_location():
 
 @parks_bp.route('/filter', methods=["POST"])
 def get_parks_filtered_by_activity():
-    filter_activities = request.get_json()
+    filter_activities = request.get_json()['activities']
     print(filter_activities)
     parks_by_activity = []
 
