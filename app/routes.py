@@ -52,7 +52,7 @@ def get_all_activities():
                                     params={"api_key":NATIONAL_PARKS_SERVICE_API_KEY})
     
     for activity in response.json()['data']:
-        activities.append({'name':activity['name'], 'toggle': False})
+        activities.append(activity['name'])
 
     return jsonify({'activities':activities})
 
