@@ -30,7 +30,7 @@ def get_all_parks_location():
 
 @parks_bp.route('/filter/<activities>', methods=["GET"])
 def get_parks_filtered_by_activity(activities):
-    filter_activities = activities
+    filter_activities = activities['activities']
     print(filter_activities)
     parks_by_activity = []
 
