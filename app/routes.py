@@ -18,14 +18,14 @@ def get_all_parks():
 #returns json object of all the parks names and locations
 @parks_bp.route('/locations', methods=["GET"])
 def get_all_parks_location():
-    all_parks_location = []
+    all_parks_location = {}
     
     for park in all_national_parks:
-        all_parks_location.append({"park_id":park['parkCode'],
+        all_parks_location.update({"park_id":park['parkCode'],
                                 "park_name":park['fullName'], 
                                 'location': {'lat': float(park['latitude']) if park['latitude'] else None, 'long': float(park['longitude']) if park['longitude'] else None}})
 
-    return jsonify(all_parks_location)
+    return jsonify({all_parks_location})
 
 
 @parks_bp.route('/filter', methods=["GET"])
