@@ -22,7 +22,7 @@ def get_all_parks_location():
     
     for park in all_national_parks:
         all_parks_location.append({"park_id":park['parkCode'],
-                                "park_name":park['fullName'], 
+                                "full_name":park['fullName'], 
                                 'location': {'lat': float(park['latitude']) if park['latitude'] else None, 'long': float(park['longitude']) if park['longitude'] else None}})
 
     return jsonify(all_parks_location)
@@ -31,15 +31,31 @@ def get_all_parks_location():
 @parks_bp.route('/filter', methods=["POST"])
 def get_parks_filtered_by_activity():
     filter_activities = request.get_json()['activities']
-    print(filter_activities)
     parks_by_activity = []
 
-    for activity in filter_activities:
-        for park in all_national_parks:
-            for park_activity in park['activities']:
-                if activity == park_activity['name']:
-                    if park not in parks_by_activity:
-                        parks_by_activity.append(park)
+    for park in all_national_parks:
+        if not filter_activities:
+            parks_by_activity.append({"park_id":park['parkCode'],
+                                "full_name":park['fullName'], 
+                                'location': {'lat': float(park['latitude']) if park['latitude'] else None, 'long': float(park['longitude']) if park['longitude'] else None},
+                                'states': [park['states']],
+                                'contacts': [park['contacts']],
+                                'entranceFees': [park['entranceFees']],
+                                'hours': park['operatingHours'],
+                                'designation': park['designation']})
+        
+        else:
+            for activity in filter_activities:
+                for park_activity in park['activities']:
+                    if activity == park_activity['name'] and park not in parks_by_activity:
+                        parks_by_activity.append({"park_id":park['parkCode'],
+                                "full_name":park['fullName'], 
+                                'location': {'lat': float(park['latitude']) if park['latitude'] else None, 'long': float(park['longitude']) if park['longitude'] else None},
+                                'states': [park['states']],
+                                'contacts': [park['contacts']],
+                                'entranceFees': [park['entranceFees']],
+                                'hours': park['operatingHours'],
+                                'designation': park['designation']})
 
 
     print(len(parks_by_activity))
