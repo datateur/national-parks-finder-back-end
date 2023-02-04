@@ -37,7 +37,8 @@ def get_parks_filtered_by_activity():
         if not filter_activities:
             parks_by_activity.append({"park_id":park['parkCode'],
                                 "full_name":park['fullName'], 
-                                'location': {'lat': float(park['latitude']) if park['latitude'] else None, 'long': float(park['longitude']) if park['longitude'] else None},
+                                'latitude': float(park['latitude']) if park['latitude'] else None,
+                                'longitude': float(park['longitude']) if park['longitude'] else None,
                                 'states': [park['states']],
                                 'contacts': [park['contacts']],
                                 'entranceFees': [park['entranceFees']],
@@ -50,7 +51,8 @@ def get_parks_filtered_by_activity():
                     if activity == park_activity['name'] and park not in parks_by_activity:
                         parks_by_activity.append({"park_id":park['parkCode'],
                                 "full_name":park['fullName'], 
-                                'location': {'lat': float(park['latitude']) if park['latitude'] else None, 'long': float(park['longitude']) if park['longitude'] else None},
+                                'latitude': float(park['latitude']) if park['latitude'] else None,
+                                'longitude': float(park['longitude']) if park['longitude'] else None,
                                 'states': [park['states']],
                                 'contacts': [park['contacts']],
                                 'entranceFees': [park['entranceFees']],
