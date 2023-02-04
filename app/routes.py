@@ -37,6 +37,7 @@ def get_parks_filtered_by_activity():
         if not filter_activities:
             parks_by_activity.append({"park_id":park['parkCode'],
                                 "full_name":park['fullName'], 
+                                'description': park['description'],
                                 'latitude': float(park['latitude']) if park['latitude'] else None,
                                 'longitude': float(park['longitude']) if park['longitude'] else None,
                                 'states': [park['states']],
@@ -50,7 +51,8 @@ def get_parks_filtered_by_activity():
                 for park_activity in park['activities']:
                     if activity == park_activity['name'] and park not in parks_by_activity:
                         parks_by_activity.append({"park_id":park['parkCode'],
-                                "full_name":park['fullName'], 
+                                "full_name":park['fullName'],
+                                'description': park['description'],
                                 'latitude': float(park['latitude']) if park['latitude'] else None,
                                 'longitude': float(park['longitude']) if park['longitude'] else None,
                                 'states': [park['states']],
