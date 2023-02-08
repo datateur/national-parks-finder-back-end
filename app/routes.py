@@ -48,6 +48,8 @@ def get_parks_filtered_by_activity_and_topic():
                                 'entranceFees': [park['entranceFees']],
                                 'hours': park['operatingHours'],
                                 'designation': park['designation']})
+            
+            return jsonify(filtered_parks), 200
         
         else:
             if filter_activities:
@@ -82,8 +84,6 @@ def get_parks_filtered_by_activity_and_topic():
     
     if parks_by_activity and parks_by_topic:
         filtered_parks = [park for park in parks_by_activity if park in parks_by_topic]
-    elif not filtered_parks:
-        filtered_parks = parks_by_activity + parks_by_topic
 
     return jsonify(filtered_parks), 200
 
