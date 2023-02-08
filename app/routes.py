@@ -36,23 +36,21 @@ def get_parks_filtered_by_activity_and_topic():
     parks_by_topic = []
     filtered_parks = []
 
-    for park in all_national_parks:
-        if not filter_activities and not filter_topics:
+    if not filter_activities and not filter_topics:
+        for park in all_national_parks:
             filtered_parks.append({"park_id":park['parkCode'],
-                                "full_name":park['fullName'], 
-                                'description': park['description'],
-                                'latitude': float(park['latitude']) if park['latitude'] else None,
-                                'longitude': float(park['longitude']) if park['longitude'] else None,
-                                'states': [park['states']],
-                                'contacts': [park['contacts']],
-                                'entranceFees': [park['entranceFees']],
-                                'hours': park['operatingHours'],
-                                'designation': park['designation']})
-            
+                                    "full_name":park['fullName'], 
+                                    'description': park['description'],
+                                    'latitude': float(park['latitude']) if park['latitude'] else None,
+                                    'longitude': float(park['longitude']) if park['longitude'] else None,
+                                    'states': [park['states']],
+                                    'contacts': [park['contacts']],
+                                    'entranceFees': [park['entranceFees']],
+                                    'hours': park['operatingHours'],
+                                    'designation': park['designation']})
         
-        return jsonify(filtered_parks), 200
-        
-        else:
+    else:
+        for park in all_national_parks:
             if filter_activities:
                 for activity in filter_activities:
                     for park_activity in park['activities']:
@@ -83,8 +81,10 @@ def get_parks_filtered_by_activity_and_topic():
                                     'hours': park['operatingHours'],
                                     'designation': park['designation']})
     
-    if parks_by_activity and parks_by_topic:
-        filtered_parks = [park for park in parks_by_activity if park in parks_by_topic]
+        if parks_by_activity and parks_by_topic:
+            filtered_parks = [park for park in parks_by_activity if park in parks_by_topic]
+        else:
+            filtered_parks = parks_by_activity + parks_by_topic
 
     return jsonify(filtered_parks), 200
 
