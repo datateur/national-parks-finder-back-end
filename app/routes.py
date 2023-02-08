@@ -32,6 +32,8 @@ def get_all_parks_location():
 def get_parks_filtered_by_activity_and_topic():
     filter_activities = request.get_json()['activities']
     filter_topics = request.get_json()['topics']
+    parks_by_activity = []
+    parks_by_topic = []
     filtered_parks = []
 
     for park in all_national_parks:
@@ -50,8 +52,8 @@ def get_parks_filtered_by_activity_and_topic():
         else:
             for activity in filter_activities:
                 for park_activity in park['activities']:
-                    if activity == park_activity['name'] and park not in filtered_parks:
-                        filtered_parks.append({"park_id":park['parkCode'],
+                    if activity == park_activity['name'] and park not in parks_by_activity:
+                        parks_by_activity.append({"park_id":park['parkCode'],
                                 "full_name":park['fullName'],
                                 'description': park['description'],
                                 'latitude': float(park['latitude']) if park['latitude'] else None,
@@ -64,8 +66,8 @@ def get_parks_filtered_by_activity_and_topic():
             
             for topic in filter_topics:
                 for park_topic in park['topics']:
-                    if topic == park_topic['name'] and park not in filtered_parks:
-                        filtered_parks.append({"park_id":park['parkCode'],
+                    if topic == park_topic['name'] and park not in parks_by_topic:
+                        parks_by_topic.append({"park_id":park['parkCode'],
                                 "full_name":park['fullName'],
                                 'description': park['description'],
                                 'latitude': float(park['latitude']) if park['latitude'] else None,
@@ -75,6 +77,11 @@ def get_parks_filtered_by_activity_and_topic():
                                 'entranceFees': [park['entranceFees']],
                                 'hours': park['operatingHours'],
                                 'designation': park['designation']})
+    
+    if parks_by_activity and parks_by_topic:
+        filtered_parks = list(set(parks_by_activity).intersection(parks_by_topic))
+    else:
+        filtered_parks = parks_by_activity + parks_by_topic
 
     return jsonify(filtered_parks), 200
 
