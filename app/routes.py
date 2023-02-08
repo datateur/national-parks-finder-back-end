@@ -49,7 +49,8 @@ def get_parks_filtered_by_activity_and_topic():
                                 'hours': park['operatingHours'],
                                 'designation': park['designation']})
             
-            return jsonify(filtered_parks), 200
+        
+        return jsonify(filtered_parks), 200
         
         else:
             if filter_activities:
