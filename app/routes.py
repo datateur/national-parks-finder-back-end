@@ -80,7 +80,7 @@ def get_parks_filtered_by_activity_and_topic():
     
     if parks_by_activity and parks_by_topic:
         filtered_parks = list(set(parks_by_activity).intersection(parks_by_topic))
-    else:
+    elif not filtered_parks:
         filtered_parks = parks_by_activity + parks_by_topic
 
     return jsonify(filtered_parks), 200
