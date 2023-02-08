@@ -29,13 +29,14 @@ def get_all_parks_location():
 
 
 @parks_bp.route('/filter', methods=["POST"])
-def get_parks_filtered_by_activity():
+def get_parks_filtered_by_activity_and_topic():
     filter_activities = request.get_json()['activities']
-    parks_by_activity = []
+    filter_topics = request.get_json()['topics']
+    filtered_parks = []
 
     for park in all_national_parks:
-        if not filter_activities:
-            parks_by_activity.append({"park_id":park['parkCode'],
+        if not filter_activities and not filter_topics:
+            filtered_parks.append({"park_id":park['parkCode'],
                                 "full_name":park['fullName'], 
                                 'description': park['description'],
                                 'latitude': float(park['latitude']) if park['latitude'] else None,
@@ -49,8 +50,22 @@ def get_parks_filtered_by_activity():
         else:
             for activity in filter_activities:
                 for park_activity in park['activities']:
-                    if activity == park_activity['name'] and park not in parks_by_activity:
-                        parks_by_activity.append({"park_id":park['parkCode'],
+                    if activity == park_activity['name'] and park not in filtered_parks:
+                        filtered_parks.append({"park_id":park['parkCode'],
+                                "full_name":park['fullName'],
+                                'description': park['description'],
+                                'latitude': float(park['latitude']) if park['latitude'] else None,
+                                'longitude': float(park['longitude']) if park['longitude'] else None,
+                                'states': [park['states']],
+                                'contacts': [park['contacts']],
+                                'entranceFees': [park['entranceFees']],
+                                'hours': park['operatingHours'],
+                                'designation': park['designation']})
+            
+            for topic in filter_topics:
+                for park_topic in park['topicss']:
+                    if topic == park_topic['name'] and park not in filtered_parks:
+                        filtered_parks.append({"park_id":park['parkCode'],
                                 "full_name":park['fullName'],
                                 'description': park['description'],
                                 'latitude': float(park['latitude']) if park['latitude'] else None,
@@ -61,9 +76,7 @@ def get_parks_filtered_by_activity():
                                 'hours': park['operatingHours'],
                                 'designation': park['designation']})
 
-
-    print(len(parks_by_activity))
-    return jsonify(parks_by_activity), 200
+    return jsonify(filtered_parks), 200
 
 
 @activities_bp.route('', methods=["GET"])
