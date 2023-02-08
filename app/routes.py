@@ -63,7 +63,7 @@ def get_parks_filtered_by_activity_and_topic():
                                 'designation': park['designation']})
             
             for topic in filter_topics:
-                for park_topic in park['topicss']:
+                for park_topic in park['topics']:
                     if topic == park_topic['name'] and park not in filtered_parks:
                         filtered_parks.append({"park_id":park['parkCode'],
                                 "full_name":park['fullName'],
