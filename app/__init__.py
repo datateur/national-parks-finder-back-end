@@ -18,7 +18,7 @@ def create_app(test_config=None):
     "SQLALCHEMY_DATABASE_URI")
 
     # Import models here
-    from app.models.park import park
+    from app.models.park import Park
 
     db.init_app(app)
     migrate.init_app(app, db)

@@ -8,9 +8,11 @@ class Park(db.Model):
     description = db.Column(db.Text)
     latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
-    activities = db.Column(db.Array(db.json)) # ???
-    topics = db.Column(db.Array(db.json)) # ???
+    activities = db.Column(db.ARRAY(db.String))
+    topics = db.Column(db.ARRAY(db.String))
     states = db.Column(db.String)
+    phone_numbers = db.Column(db.ARRAY(db.JSON))
+    emails = db.Column(db.ARRAY(db.String))
 
 
 

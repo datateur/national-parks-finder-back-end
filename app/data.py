@@ -40,5 +40,26 @@ def get_all_national_parks_data():
 #         print(f"park: {park['fullName']} \n latitude: {park['latitude']} \n longitude: {park['longitude']}")
 #         pprint.pprint(park)
 
+#@activities_bp.route('', methods=["GET"])
+def get_all_activities():
+    activities = []
+    response = requests.get("https://developer.nps.gov/api/v1/activities?",
+                                    params={"api_key":NATIONAL_PARKS_SERVICE_API_KEY})
+    
+    for activity in response.json()['data']:
+        activities.append(activity['name'])
 
+    return jsonify({'activities':activities})
+
+
+#@topics_bp.route('', methods=["GET"])
+def get_all_topics():
+    topics = []
+    response = requests.get("https://developer.nps.gov/api/v1/topics?",
+                                    params={"api_key":NATIONAL_PARKS_SERVICE_API_KEY})
+    
+    for topic in response.json()['data']:
+        topics.append(topic['name'])
+
+    return jsonify({'topics':topics})
 

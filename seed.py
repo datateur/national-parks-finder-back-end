@@ -1,6 +1,7 @@
 from app import create_app, db
 from app.models.park import Park
 from app.data import get_all_national_parks_data
+import json
 
 def getParks():
     all_parks = get_all_national_parks_data()
@@ -13,9 +14,13 @@ def getParks():
             latitude = float(park['latitude']) if park['latitude'] else None,
             longitude = float(park['longitude']) if park['longitude'] else None,
             states = park['states'],
-            activities = park['activities'],
-            topics = park['topics'],
-            park_code = park['parkCode']
+            activities = [activity['name'] for activity in park['activities']],
+            topics = [topic['name'] for topic in park['topics']],
+            park_code = park['parkCode'],
+            phone_numbers = [{'phoneNumber': number['phoneNumber'],
+                                        'type': number['type']} 
+                                        for number in park['contacts']['phoneNumbers']],
+            emails = [email['emailAddress'] for email in park['contacts']['emailAddresses']]
         )
 
         # if fountain_to_add.type == '':
