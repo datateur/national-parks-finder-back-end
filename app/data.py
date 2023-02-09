@@ -12,7 +12,7 @@ def get_all_national_parks_data():
             response = requests.get("https://developer.nps.gov/api/v1/parks?",
                                     params={"api_key":NATIONAL_PARKS_SERVICE_API_KEY, "start":start_int})
 
-            # 
+            #
             if response.status_code == 200:
                 national_parks += response.json()['data']
                 start_int += 50
@@ -39,6 +39,5 @@ def get_all_national_parks_data():
 #     if park['latitude'] == '' or park['longitude'] == '':
 #         print(f"park: {park['fullName']} \n latitude: {park['latitude']} \n longitude: {park['longitude']}")
 #         pprint.pprint(park)
-
 
 
