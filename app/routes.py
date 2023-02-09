@@ -89,7 +89,7 @@ def get_parks_filtered_by_activity_and_topic():
 
     return jsonify(filtered_parks), 200
 
-@parks_bp.route('/filter', methods=["POST"])
+@parks_bp.route('/filter/db', methods=["POST"])
 def get_parks_filtered_by_activity_and_topic():
     filter_activities = request.get_json()['activities']
     filter_topics = request.get_json()['topics']
@@ -104,8 +104,7 @@ def get_parks_filtered_by_activity_and_topic():
             response.append(
                 park.to_dict()
             )
-        return 
-
+        return  jsonify(response), 200
         
     else:
         for park in all_national_parks:
