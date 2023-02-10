@@ -14,13 +14,13 @@ NATIONAL_PARKS_SERVICE_API_KEY = os.environ['NATIONAL_PARKS_SERVICE_API_KEY']
 # returns json object of all the parks
 @parks_bp.route('', methods=["GET"])
 def get_all_parks():
-    parks = Park.query.all()
-    response = []
-    for park in parks:
-        response.append(park.to_dict())
+    # parks = Park.query.all()
+    # response = []
+    # for park in parks:
+    #     response.append(park.to_dict())
     
-    return jsonify(response), 200
-    # return jsonify({'parks':all_national_parks}), 200
+    # return jsonify(response), 200
+    return jsonify({'parks':all_national_parks}), 200
 
 
 @parks_bp.route('/filter', methods=["POST"])
