@@ -1,4 +1,7 @@
 from app import db
+#from sqlalchemy.dialects.postgresql import ARRAY
+# using this with Park.query.filter(Park.activities.contains(filter_activities)) in tiler route
+# is the same as using Park.query.filter(Park.activities.op("@>")(filter_activities)) without import
 
 class Park(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -13,6 +16,12 @@ class Park(db.Model):
     states = db.Column(db.String)
     phone_numbers = db.Column(db.ARRAY(db.JSON))
     emails = db.Column(db.ARRAY(db.String))
+    #fees = db.Column(db.ARRAY(db.))
+    #operating_hours = db.Column
+    #images = db.Column
+    designation = db.Column(db.String)
+
+
 
     def to_dict(self):
         return {
@@ -27,7 +36,8 @@ class Park(db.Model):
             'topics': self.topics,
             'states': self.states,
             'phone_numbers': self.phone_numbers,
-            'emails': self.emails
+            'emails': self.emails,
+            'designation': self.designation
         }
 
 

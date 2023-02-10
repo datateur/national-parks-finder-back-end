@@ -20,7 +20,8 @@ def getParks():
             phone_numbers = [{'phoneNumber': number['phoneNumber'],
                                         'type': number['type']} 
                                         for number in park['contacts']['phoneNumbers']],
-            emails = [email['emailAddress'] for email in park['contacts']['emailAddresses']]
+            emails = [email['emailAddress'] for email in park['contacts']['emailAddresses']],
+            designation = park['designation']
         )
 
         # if fountain_to_add.type == '':

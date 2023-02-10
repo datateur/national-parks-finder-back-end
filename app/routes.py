@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify, make_response, abort
 from .data import get_all_national_parks_data
 import requests, os
 from app.models.park import Park
+from sqlalchemy.dialects.postgresql import ARRAY
 
 parks_bp = Blueprint("parks", __name__, url_prefix="/parks")
 activities_bp = Blueprint("activities", __name__, url_prefix="/activities")
@@ -90,7 +91,7 @@ def get_parks_filtered_by_activity_and_topic():
     return jsonify(filtered_parks), 200
 
 @parks_bp.route('/filter/db', methods=["POST"])
-def get_parks_filtered_by_activity_and_topic():
+def get_parks_filtered_db():
     filter_activities = request.get_json()['activities']
     filter_topics = request.get_json()['topics']
     parks_by_activity = []
@@ -107,41 +108,28 @@ def get_parks_filtered_by_activity_and_topic():
         return  jsonify(response), 200
         
     else:
-        for park in all_national_parks:
-            if filter_activities:
-                for activity in filter_activities:
-                    for park_activity in park['activities']:
-                        if activity == park_activity['name'] and park not in parks_by_activity:
-                            parks_by_activity.append({"park_id":park['parkCode'],
-                                    "full_name":park['fullName'],
-                                    'description': park['description'],
-                                    'latitude': float(park['latitude']) if park['latitude'] else None,
-                                    'longitude': float(park['longitude']) if park['longitude'] else None,
-                                    'states': [park['states']],
-                                    'contacts': [park['contacts']],
-                                    'entranceFees': [park['entranceFees']],
-                                    'hours': park['operatingHours'],
-                                    'designation': park['designation']})
-            
-            if filter_topics:
-                for topic in filter_topics:
-                    for park_topic in park['topics']:
-                        if topic == park_topic['name'] and park not in parks_by_topic:
-                            parks_by_topic.append({"park_id":park['parkCode'],
-                                    "full_name": park['fullName'],
-                                    'description': park['description'],
-                                    'latitude': float(park['latitude']) if park['latitude'] else None,
-                                    'longitude': float(park['longitude']) if park['longitude'] else None,
-                                    'states': [park['states']],
-                                    'contacts': [park['contacts']],
-                                    'entranceFees': [park['entranceFees']],
-                                    'hours': park['operatingHours'],
-                                    'designation': park['designation']})
+        if filter_activities:
+            response = []
+        
+            # TODO: search if each activity is in every parks .activities array
+            parks = Park.query.all()
     
-        if parks_by_activity and parks_by_topic:
-            filtered_parks = [park for park in parks_by_activity if park in parks_by_topic]
-        else:
-            filtered_parks = parks_by_activity + parks_by_topic
+
+            filtered_parks = Park.query.filter(Park.activities.overlap(ARRAY(filter_activities))).all()
+            for park in filtered_parks:
+                response.append(
+                    park.to_dict()
+                    )
+            return  jsonify(response), 200
+        # if filter_topics:
+            
+    
+        # if parks_by_activity and parks_by_topic:
+        #     filtered_parks = [park for park in parks_by_activity if park in parks_by_topic]
+        # else:
+        #     filtered_parks = parks_by_activity + parks_by_topic
+
+        #query.union or query.intersect
 
     return jsonify(filtered_parks), 200
 
