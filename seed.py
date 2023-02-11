@@ -18,26 +18,23 @@ def getParks():
             topics = [topic['name'] for topic in park['topics']],
             park_code = park['parkCode'],
             phone_numbers = [{'phoneNumber': number['phoneNumber'],
-                                        'type': number['type']} 
-                                        for number in park['contacts']['phoneNumbers']],
+                                'type': number['type']} 
+                            for number in park['contacts']['phoneNumbers']],
             emails = [email['emailAddress'] for email in park['contacts']['emailAddresses']],
-            designation = park['designation']
+            designation = park['designation'],
+            images = [{'url': image['url'], 'caption': image['caption'],
+                        'title': image['title'], 'altText': image['altText']} 
+                        for image in park['images']],
+            fees = [{'cost': fee['cost'], 'description': fee['description'],
+                    'title': fee['title']} for fee in park['entranceFees']],
+            operating_hours = [{'name': site['name'], 'standardHours': site['standardHours'],
+                                'description': site['description']} for site in park['operatingHours']],
+            addresses = [{'line1': address['line1'], 'line2': address['line2'], 'line3': address['line3'],
+                        'city': address['city'], 'state': address['stateCode'], 'postalCode': address['postalCode']}
+                        for address in park['addresses'] if address['type'] == 'Physical']
         )
 
-        # if fountain_to_add.type == '':
-        #     fountain_to_add.type = 'PUBLIC DRINKING FOUNTAIN'
         list_of_parks_to_add_to_db.append(park_to_add)
-
-        # if fountain_to_add.borough == 'M':
-        #     fountain_to_add.borough = 'Manhattan'
-        # if fountain_to_add.borough == 'B':
-        #     fountain_to_add.borough = 'Brooklyn'
-        # if fountain_to_add.borough == 'X':
-        #     fountain_to_add.borough = 'Bronx'
-        # if fountain_to_add.borough == 'Q':
-        #     fountain_to_add.borough = 'Queens'
-        # if fountain_to_add.borough == 'R':
-        #     fountain_to_add.borough = 'Staten Island'
 
     return list_of_parks_to_add_to_db
 
