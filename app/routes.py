@@ -14,13 +14,13 @@ NATIONAL_PARKS_SERVICE_API_KEY = os.environ['NATIONAL_PARKS_SERVICE_API_KEY']
 # returns json object of all the parks
 @parks_bp.route('', methods=["GET"])
 def get_all_parks():
-    # parks = Park.query.all()
-    # response = []
-    # for park in parks:
-    #     response.append(park.to_dict())
+    parks = Park.query.all()
+    response = []
+    for park in parks:
+        response.append(park.to_dict())
     
-    # return jsonify(response), 200
-    return jsonify({'parks':all_national_parks}), 200
+    return jsonify(response), 200
+    #return jsonify({'parks':all_national_parks}), 200
 
 
 @parks_bp.route('/filter', methods=["POST"])
@@ -105,24 +105,22 @@ def get_parks_filtered_db():
             response = []
         
             # TODO: search if each activity is in every parks .activities array
-            parks = Park.query.all()
-    
-
             filtered_parks = Park.query.filter(Park.activities.overlap(ARRAY(filter_activities))).all()
             for park in filtered_parks:
                 response.append(
                     park.to_dict()
                     )
             return  jsonify(response), 200
-        # if filter_topics:
-            
-    
-        # if parks_by_activity and parks_by_topic:
-        #     filtered_parks = [park for park in parks_by_activity if park in parks_by_topic]
-        # else:
-        #     filtered_parks = parks_by_activity + parks_by_topic
 
-        #query.union or query.intersect
+        # if filter_topics:
+        #     response = []
+
+        #     filtered_parks = Park.query.filter(Park.activities.overlap(ARRAY(filter_activities))).all()
+        #     for park in filtered_parks:
+        #         response.append(
+        #             park.to_dict()
+        #             )
+        #     return  jsonify(response), 200
 
     return jsonify(filtered_parks), 200
 
