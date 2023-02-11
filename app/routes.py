@@ -3,6 +3,7 @@ from .data import get_all_national_parks_data
 import requests, os
 from app.models.park import Park
 from sqlalchemy.dialects.postgresql import ARRAY
+from app import db
 
 parks_bp = Blueprint("parks", __name__, url_prefix="/parks")
 activities_bp = Blueprint("activities", __name__, url_prefix="/activities")
@@ -90,39 +91,30 @@ def get_parks_filtered_db():
     parks_by_activity = []
     parks_by_topic = []
     filtered_parks = []
+    response = []
 
     if not filter_activities and not filter_topics:
         filtered_parks = Park.query.all()
-        response = []
-        for park in filtered_parks:
-            response.append(
-                park.to_dict()
-            )
-        return  jsonify(response), 200
         
     else:
         if filter_activities:
-            response = []
-        
-            # TODO: search if each activity is in every parks .activities array
-            filtered_parks = Park.query.filter(Park.activities.overlap(ARRAY(filter_activities))).all()
-            for park in filtered_parks:
-                response.append(
-                    park.to_dict()
-                    )
-            return  jsonify(response), 200
+            parks_by_activity = Park.query.filter(Park.activities.contains(db.cast(filter_activities, ARRAY(db.String)))).all()
 
-        # if filter_topics:
-        #     response = []
+        if filter_topics:
+            parks_by_topic = Park.query.filter(Park.topics.contains(db.cast(filter_topics, ARRAY(db.String)))).all()
+    
+    if parks_by_activity and parks_by_topic:
+        filtered_parks = [park for park in parks_by_activity if park in parks_by_topic]
+    else:
+        filtered_parks = parks_by_activity + parks_by_topic
 
-        #     filtered_parks = Park.query.filter(Park.activities.overlap(ARRAY(filter_activities))).all()
-        #     for park in filtered_parks:
-        #         response.append(
-        #             park.to_dict()
-        #             )
-        #     return  jsonify(response), 200
+    for park in filtered_parks:
+        response.append(
+            park.to_dict()
+            )
+    print(len(response))
 
-    return jsonify(filtered_parks), 200
+    return jsonify(response), 200
 
 
 
