@@ -96,17 +96,24 @@ def get_parks_filtered_db():
     if not filter_activities and not filter_topics:
         filtered_parks = Park.query.all()
         
-    else:
-        if filter_activities:
-            parks_by_activity = Park.query.filter(Park.activities.contains(db.cast(filter_activities, ARRAY(db.String)))).all()
+    elif filter_activities and filter_topics:
+        filtered_parks = Park.query.filter(Park.activities.contains(db.cast(filter_activities, ARRAY(db.String))), Park.topics.contains(db.cast(filter_topics, ARRAY(db.String)))).all()
 
-        if filter_topics:
-            parks_by_topic = Park.query.filter(Park.topics.contains(db.cast(filter_topics, ARRAY(db.String)))).all()
+    elif filter_activities:
+        filtered_parks = Park.query.filter(Park.activities.contains(db.cast(filter_activities, ARRAY(db.String)))).all()
     
-    if parks_by_activity and parks_by_topic:
-        filtered_parks = [park for park in parks_by_activity if park in parks_by_topic]
-    elif parks_by_activity or parks_by_topic:
-        filtered_parks = parks_by_activity + parks_by_topic
+    elif filter_topics:
+        filtered_parks = Park.query.filter(Park.topics.contains(db.cast(filter_topics, ARRAY(db.String)))).all()
+        # if filter_activities:
+        #     parks_by_activity = Park.query.filter(Park.activities.contains(db.cast(filter_activities, ARRAY(db.String)))).all()
+
+        # if filter_topics:
+        #     parks_by_topic = Park.query.filter(Park.topics.contains(db.cast(filter_topics, ARRAY(db.String)))).all()
+    
+    # if parks_by_activity and parks_by_topic:
+    #     filtered_parks = [park for park in parks_by_activity if park in parks_by_topic]
+    # elif parks_by_activity or parks_by_topic:
+    #     filtered_parks = parks_by_activity + parks_by_topic
 
     for park in filtered_parks:
         response.append(
