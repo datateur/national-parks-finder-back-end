@@ -105,7 +105,7 @@ def get_parks_filtered_db():
     
     if parks_by_activity and parks_by_topic:
         filtered_parks = [park for park in parks_by_activity if park in parks_by_topic]
-    else:
+    elif parks_by_activity or parks_by_topic:
         filtered_parks = parks_by_activity + parks_by_topic
 
     for park in filtered_parks:
