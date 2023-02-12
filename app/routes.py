@@ -14,7 +14,7 @@ NATIONAL_PARKS_SERVICE_API_KEY = os.environ['NATIONAL_PARKS_SERVICE_API_KEY']
 def get_parks_filtered_db():
     filter_activities = request.get_json()['activities']
     filter_topics = request.get_json()['topics']
-    filter_designation = request.get_json()['designations']
+    filter_designations = request.get_json()['types']
     filtered_parks = []
     response = []
         
