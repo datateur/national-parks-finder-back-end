@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, make_response, abort
+from flask import Blueprint, request, jsonify#, make_response, abort
 import requests, os
 from app.models.park import Park
 from sqlalchemy.dialects.postgresql import ARRAY
@@ -58,6 +58,20 @@ def get_all_topics():
         topics.append(topic['name'])
 
     return jsonify({'topics':topics})
+
+@parks_bp.route('/designations', methods=["GET"])
+def get_all_designations():
+    designations = []
+
+    parks = Park.query.all()
+
+    for park in parks:
+        if park.__dict__['designation'] and park.__dict__['designation'] not in designations:
+            designations.append(park.__dict__['designation'])
+    
+    print(designations)
+    return jsonify(designations), 200
+
 
 
 
