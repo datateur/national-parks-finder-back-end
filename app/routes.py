@@ -68,8 +68,8 @@ def get_all_park_types():
     parks = Park.query.all()
 
     for park in parks:
-        if park.__dict__['designation'] and park.__dict__['designation'] not in types:
-            types.append(park.__dict__['designation'])
+        if park.__dict__['type'] and park.__dict__['type'] not in types:
+            types.append(park.__dict__['type'])
     
     return jsonify({'types': types}), 200
 
