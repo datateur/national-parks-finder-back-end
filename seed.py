@@ -21,7 +21,7 @@ def getParks():
                                 'type': number['type']} 
                             for number in park['contacts']['phoneNumbers']],
             emails = [email['emailAddress'] for email in park['contacts']['emailAddresses']],
-            designation = park['designation'],
+            type = park['designation'],
             images = [{'url': image['url'], 'caption': image['caption'],
                         'title': image['title'], 'altText': image['altText']} 
                         for image in park['images']],

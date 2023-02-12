@@ -17,7 +17,7 @@ class Park(db.Model):
     fees = db.Column(db.ARRAY(db.JSON))
     operating_hours = db.Column(db.ARRAY(db.JSON))
     images = db.Column(db.ARRAY(db.JSON))
-    designation = db.Column(db.String)
+    type = db.Column(db.String)
     addresses = db.Column(db.ARRAY(db.JSON))
 
 
@@ -38,7 +38,7 @@ class Park(db.Model):
             'fees': self.fees,
             'operatingHours': self.operating_hours,
             'images': self.images,
-            'designation': self.designation,
+            'type': self.type,
             'addresses': self.addresses
         }
 

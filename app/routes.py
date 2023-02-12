@@ -7,29 +7,29 @@ from app import db
 parks_bp = Blueprint("parks", __name__, url_prefix="/parks")
 activities_bp = Blueprint("activities", __name__, url_prefix="/activities")
 topics_bp = Blueprint("topics", __name__, url_prefix="/topics")
+types_bp = Blueprint("types", __name__, url_prefix="/types")
 
 NATIONAL_PARKS_SERVICE_API_KEY = os.environ['NATIONAL_PARKS_SERVICE_API_KEY']
 
 @parks_bp.route('/filter', methods=["POST"])
-def get_parks_filtered_db():
+def get_filtered_parks():
     filter_activities = request.get_json()['activities']
     filter_topics = request.get_json()['topics']
-    filter_designations = request.get_json()['types']
-    filtered_parks = []
+    filter_types = request.get_json()['types']
+
+    query = Park.query
     response = []
         
-    if filter_activities and filter_topics:
-        filtered_parks = Park.query.filter(Park.activities.contains(db.cast(filter_activities, ARRAY(db.String))), Park.topics.contains(db.cast(filter_topics, ARRAY(db.String)))).all()
+    if filter_activities:
+        query = query.filter(Park.activities.contains(db.cast(filter_activities, ARRAY(db.String))))
 
-    elif filter_activities:
-        filtered_parks = Park.query.filter(Park.activities.contains(db.cast(filter_activities, ARRAY(db.String)))).all()
+    if filter_topics:
+        query = query.filter(Park.topics.contains(db.cast(filter_topics, ARRAY(db.String))))
     
-    elif filter_topics:
-        filtered_parks = Park.query.filter(Park.topics.contains(db.cast(filter_topics, ARRAY(db.String)))).all()
-    
-    else:
-        filtered_parks = Park.query.all()
+    if filter_types:
+        query = query.filter(Park.type.in_(filter_types))
 
+    filtered_parks = query.all()
 
     for park in filtered_parks:
         response.append(park.to_dict())
@@ -60,18 +60,18 @@ def get_all_topics():
 
     return jsonify({'topics':topics})
 
-@parks_bp.route('/designations', methods=["GET"])
-def get_all_designations():
-    designations = []
+
+@types_bp.route('', methods=["GET"])
+def get_all_park_types():
+    types = []
 
     parks = Park.query.all()
 
     for park in parks:
-        if park.__dict__['designation'] and park.__dict__['designation'] not in designations:
-            designations.append(park.__dict__['designation'])
+        if park.__dict__['designation'] and park.__dict__['designation'] not in types:
+            types.append(park.__dict__['designation'])
     
-    print(designations)
-    return jsonify({'types':designations}), 200
+    return jsonify({'types': types}), 200
 
 
 
